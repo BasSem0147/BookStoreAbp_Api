@@ -1,0 +1,135 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>{{ '::Authors' | abpLocalization }}</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+          <li class="breadcrumb-item active">Authors</li>
+        </ol>
+      </div>
+    </div>
+    <div class="mb-3">
+      <input type="text" class="form-control" placeholder="Search by Author name..." [ngModel]="searchText"
+        (ngModelChange)="onSearchTextChange($event)" />
+    </div>
+    <!-- Author List -->
+    <ng-container *ngIf="author.items.length > 0">
+
+      <div class="row mb-2">
+        <div class="col-sm-12">
+          <a (click)="createAuthor()" class="btn btn-primary float-right">Create Author</a>
+
+          <div class="card my-3">
+            <div class="card-body">
+              <h4 class="card-title">Simple-datatables</h4>
+              <p class="text-muted">Read the official documentation for full usage and options.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h6 class="card-title">Data Table</h6>
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Surname</th>
+                      <th>Bio</th>
+                      <th>Birth Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let obj of author.items" (click)="editAuthor(obj.id)">
+                      <td>{{ obj.name }}</td>
+                      <td>{{ obj.surname }}</td>
+                      <td>{{ obj.bio }}</td>
+                      <td>{{ obj.birthDate | date:'mediumDate' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <pagination [totalItems]="totalCount" [(ngModel)]="pageNum" (pageChanged)="pageChanged($event)"
+              (numPages)="smallnumPages = $event"></pagination>
+              <br />
+            <pre class="card card-block card-header mb-3">Total Authors: {{totalCount}}</pre>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- No Data -->
+    <ng-container *ngIf="!author.items.length">
+      <div class="row mb-2">
+        <div class="col-sm-12">
+          <app-no-data [routePath]="'Authors/create'" msg="No Authors Available" buttonLabel="Create Author">
+          </app-no-data>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</section>
+<abp-modal [(visible)]="isModalOpen">
+  <ng-template #abpHeader>
+    <h3>{{ '::NewAuthor' | abpLocalization }}</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="mt-2">
+        <label for="Author-name">Name</label><span> * </span>
+        <input type="text" id="Author-name" class="form-control" formControlName="name" autofocus />
+      </div>
+
+      <div class="mt-2">
+        <label for="Author-SurName">surName</label><span> * </span>
+        <input type="text" id="Author-SurName" class="form-control" formControlName="surname" />
+      </div>
+      <div class="mt-2">
+        <label for="Author-Bio">Bio</label><span> * </span>
+        <input type="text" id="Author-Bio" class="form-control" formControlName="bio" />
+      </div>
+      <div class="mt-2">
+        <label for="Author-picture">picture</label><span> * </span>
+        <input type="text" id="Author-picture" class="form-control" formControlName="picture" />
+      </div>
+      <!-- <div class="mt-2">
+        <label for="Author-type">Type</label><span> * </span>
+        <select class="form-control" id="Author-type" formControlName="type">
+          <option [ngValue]="null">Select a Author type</option>
+          <option [ngValue]="type.value" *ngFor="let type of AuthorTypes"> {{ '::Enum:AuthorType.' + type.value |
+            abpLocalization }}</option>
+        </select>
+      </div> -->
+      <div class="mt-2">
+        <label>birthDate</label><span> * </span>
+        <input #datepicker="ngbDatepicker" class="form-control" name="datepicker" formControlName="birthDate"
+          ngbDatepicker (click)="datepicker.toggle()" />
+      </div>
+      <div class="mt-2">
+        <label>deathDate</label><span> * </span>
+        <input #datepicker="ngbDatepicker" class="form-control" name="datepicker" formControlName="deathDate"
+          ngbDatepicker (click)="datepicker.toggle()" />
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #abpFooter>
+    <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+      <i class="fa fa-check mr-1"></i>
+      {{ '::Save' | abpLocalization }}
+    </button>
+    <button class="btn btn-danger" (click)="deleteAuthor()" [disabled]="!selectedAuthorId">
+      <i class="fa fa-trash mr-1"></i>
+      {{ '::Delete' | abpLocalization }}
+    </button>
+    <button type="button" class="btn btn-secondary" abpClose>
+      {{ '::Close' | abpLocalization }}
+    </button>
+  </ng-template>
+</abp-modal>
