@@ -14,6 +14,7 @@ import { AuthorDto } from 'src/app/proxy/iservices/author';
 import { BookDto } from 'src/app/proxy/iservices/book';
 import { AppNoDataComponent } from 'src/app/shared/Component/app-no-data/app-no-data.component';
 import { FileService } from 'src/app/shared/Services/file.service';
+import { NotificationService } from 'src/app/shared/Services/notification.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from 'src/environments/environment';
 
@@ -50,9 +51,11 @@ export class BookComponent implements OnInit {
     private toastr: ToastrService,
     private fileService: FileService,
     private authService: AuthorAppServicesService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
+    this.sendMessage();
     this.getBooks();
     this.searchTextChanged.pipe(
       debounceTime(300) // wait 300ms after user stops typing
@@ -163,4 +166,7 @@ export class BookComponent implements OnInit {
       this.selectedFile = file;
     }
   }
+  sendMessage() {
+  this.notificationService.sendMessage('Basem', 'Hello from Angular!');
+}
 }

@@ -44,6 +44,9 @@ using Volo.Abp.BackgroundWorkers.Hangfire;
 using Volo.Abp.Hangfire;
 using Volo.Abp.BackgroundJobs.Hangfire;
 using System.Net.Http;
+using Acme.BookStore.AppServices.Hangfire;
+using Acme.BookStore.SignalR;
+using Acme.BookStore.AppServices.SignalR;
 
 namespace Acme.BookStore;
 
@@ -133,6 +136,7 @@ public class BookStoreHttpApiHostModule : AbpModule
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
         ConfigureHangfire(context, configuration);
+        context.Services.AddSignalR();
     }
     private void ConfigureHangfire(ServiceConfigurationContext context, IConfiguration configuration)
     {
@@ -310,5 +314,24 @@ public class BookStoreHttpApiHostModule : AbpModule
         app.UseAbpSerilogEnrichers();
         app.UseHangfireDashboard("/hangfire");
         app.UseConfiguredEndpoints();
+        RecurringHangfire(context);
+        // Add SignalR endpoints
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+            endpoints.MapHub<NotificationHub>("/signalr-notifications");
+            endpoints.MapHub<NotificationRHub>("/signalrSpecific-notifications");
+        });
+
+        app.UseHangfireDashboard(); // optional
+    }
+    private void RecurringHangfire(ApplicationInitializationContext context)
+    {
+        var recurringJobManager = context.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+        recurringJobManager.AddOrUpdate<EmailSendingJob>(
+            "EmailSendingJob",               // Unique Job ID
+            job => job.ExecuteAsync(),        // Method to call
+            Cron.Daily                    // Cron expression (runs every minute)
+        );
     }
 }

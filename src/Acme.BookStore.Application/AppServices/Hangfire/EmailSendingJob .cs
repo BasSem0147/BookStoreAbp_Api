@@ -27,6 +27,15 @@ namespace Acme.BookStore.AppServices.Hangfire
                 args.Body
             );
         }
+        public  async Task ExecuteAsync()
+        {
+            EmailSendingArgs args =new EmailSendingArgs() { Body="Hello",EmailAddress="swebasem@gmail.com",Subject="Send"};
+            await _emailSender.SendAsync(
+                 args.EmailAddress,
+                 args.Subject,
+                 args.Body
+             );
+        }
     }
     //[Queue("alpha")]
     //public class HangFireJob
