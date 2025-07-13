@@ -55,7 +55,6 @@ export class BookComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.sendMessage();
     this.getBooks();
     this.searchTextChanged.pipe(
       debounceTime(300) // wait 300ms after user stops typing
@@ -164,6 +163,7 @@ export class BookComponent implements OnInit {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
+      this.sendMessage();
     }
   }
   sendMessage() {
