@@ -27,7 +27,6 @@ namespace Acme.BookStore.SeedData
                         Name = "George",
                         Surname = "Orwell",
                         Bio = "George Orwell was an English novelist, essayist, journalist and critic.",
-                        Picture = "https://example.com/picture1.jpg",
                         BirthDate = new DateTime(1903, 6, 25),
                         DeathDate = new DateTime(1950, 1, 21)
                     },                   

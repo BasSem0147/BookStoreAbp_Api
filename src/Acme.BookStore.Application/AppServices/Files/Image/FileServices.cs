@@ -10,21 +10,20 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Volo.Abp;
 using Acme.BookStore.IAppServices;
+using Acme.BookStore.IServices.File;
 
 namespace Acme.BookStore.AppServices.Files.Image
 {
-    public class ImageAppServises : Acme.BookStore.IAppServices.IAppServices, IFileServices
+    public class FileServices : Acme.BookStore.IAppServices.IAppServices,IFileServices
     {
         private readonly IWebHostEnvironment _env;
 
-        public ImageAppServises(IWebHostEnvironment env)
+        public FileServices(IWebHostEnvironment env)
         {
             _env = env;
         }
-
-        [HttpPost]
-        [Route("api/app/image/upload")]
-        public async Task<string> UploadFileAsync(string Id, IFormFile file)
+        [HttpPost("UploadFileAsync")]
+        public async Task<bool> UploadFileAsync(string Id, IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
@@ -35,10 +34,9 @@ namespace Acme.BookStore.AppServices.Files.Image
             {
                 await file.CopyToAsync(stream);
             }
-
-            return $"uploads/{filePath}";
+            return true;
         }
-
+        [HttpPost("DeleteFileAsync")]
         public async Task<bool> DeleteFileAsync(string Id)
         {
             string path = GetUploadDirectory(Id);
@@ -49,6 +47,8 @@ namespace Acme.BookStore.AppServices.Files.Image
             }
             return false;
         }
+        [HttpGet("GetFileUrlAsync")]
+
         public async Task<string> GetFileUrlAsync(string Id)
         {
             var path = Path.Combine("wwwroot", GetUploadDirectory(Id));
@@ -64,6 +64,7 @@ namespace Acme.BookStore.AppServices.Files.Image
             }
             return "";
         }
+        [ApiExplorerSettings(IgnoreApi = true)]
         internal string GetUploadDirectory(string Id)
         {
             var dir = Path.GetFullPath(".\\wwwroot");

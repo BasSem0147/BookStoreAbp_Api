@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp.DependencyInjection;
 
-namespace Acme.BookStore.IAppServices
+namespace Acme.BookStore.IServices.File
 {
-    public interface IFileServices
+    public interface IFileServices : ITransientDependency
     {
-        Task<string> UploadFileAsync(string Id, IFormFile file);
+        Task<bool> UploadFileAsync(string Id, IFormFile file);
         Task<bool> DeleteFileAsync(string Id);
         Task<string> GetFileUrlAsync(string Id);
     }

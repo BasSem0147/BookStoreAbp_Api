@@ -19,6 +19,14 @@ export class AuthorAppServicesService {
     { apiName: this.apiName,...config });
   
 
+  getAllAutorFromCache = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, AuthorDto[]>({
+      method: 'GET',
+      url: '/api/app/author-app-services/autor-from-cache',
+    },
+    { apiName: this.apiName,...config });
+  
+
   getAllByInput = (input: GetBaseList, config?: Partial<Rest.Config>) =>
     this.restService.request<any, PagedResultDto<AuthorDto>>({
       method: 'GET',

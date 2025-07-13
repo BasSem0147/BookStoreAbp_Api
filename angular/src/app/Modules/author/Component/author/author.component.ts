@@ -12,6 +12,9 @@ import { NgbDateNativeAdapter, NgbDateAdapter, NgbDatepickerModule } from '@ng-b
 import { ConfirmationService, Confirmation } from '@abp/ng.theme.shared';
 import { PageChangedEvent, PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { FileService } from 'src/app/shared/Services/file.service';
 
 @Component({
   selector: 'app-author',
@@ -34,12 +37,16 @@ export class AuthorComponent implements OnInit {
   selectedAuthor = {} as AuthorDto;
   selectedAuthorId: string;
   totalPages: number = 0;
+  selectedFile: File | null = null;
+  uploadedImageUrl: string | null = null;
+  apiUrl = environment.apis.default.url; // Use the apiUrl from environment
   constructor(
     public readonly list: ListService,
     private authorService: AuthorAppServicesService,
     private fb: FormBuilder,
     private confirmation: ConfirmationService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private fileService: FileService,
   ) { }
 
   ngOnInit() {
@@ -60,7 +67,6 @@ export class AuthorComponent implements OnInit {
   loadAuthors() {
     this.selectedAuthorId = ''; // Reset selected author ID when loading authors
     this.selectedAuthor = {} as AuthorDto; // Reset selected author object
-    this.selectedAuthorId = '';
     this.selectedAuthor = {} as AuthorDto;
     this.authorService.getAllByInput({
       skipCount: (this.pageNum - 1) * this.pageSize,
@@ -89,7 +95,7 @@ export class AuthorComponent implements OnInit {
       name: [this.selectedAuthor.name || '', Validators.required],
       surname: [this.selectedAuthor.surname || '', Validators.required],
       bio: [this.selectedAuthor.bio || null, Validators.required],
-      picture: [this.selectedAuthor.picture || null, Validators.required],
+      picture: [this.selectedFile ? this.selectedAuthor.picture : null, null],
       birthDate: [this.selectedAuthor.birthDate ? new Date(this.selectedAuthor.birthDate) : null, Validators.required],
       deathDate: [this.selectedAuthor.deathDate ? new Date(this.selectedAuthor.deathDate) : null, null],
     });
@@ -106,7 +112,23 @@ export class AuthorComponent implements OnInit {
       ? this.authorService.updateByInput(this.form.value)
       : this.authorService.insertByInput(this.form.value);
 
-    request.subscribe(() => {
+    request.subscribe((res) => {
+      console.log('Author saved successfully', res.id);
+      if (this.selectedFile) {
+        this.fileService.uploadFile('Authors' + res.id, this.selectedFile).subscribe({
+          next: (res) => {
+            console.log('File uploaded successfully', res);
+            setTimeout(() => {
+              this.toastr.success('File saved successfully!', 'Success');
+            }, 3000);
+          },
+          error: (err) => {
+            setTimeout(() => {
+              this.toastr.error('File Upload failed!', 'Error');
+            }, 3000);
+          }
+        });
+      }
       this.isModalOpen = false;
       this.form.reset();
       this.loadAuthors();
@@ -132,14 +154,42 @@ export class AuthorComponent implements OnInit {
       }
     });
   }
+  deleteImage() {
+    const id = this.selectedAuthorId; // Use the stored selected author ID
+    if (!id) {
+      return; // If no author is selected, do nothing
+    }
+    this.confirmation.warn('::AreYouSureToDelete', '::AreYouSure').subscribe((status) => {
+      if (status === Confirmation.Status.confirm) {
+        this.fileService.deleteFile('Authors' + id).subscribe({
+          next: (res) => {
+            this.uploadedImageUrl = null; // Reset the uploaded image URL
+            this.toastr.success('File saved successfully!', 'Success');
+          },
+          error: (err) => {
+            this.toastr.error('File Upload failed!', 'Error');
+          }
+        });
+      }
+    });
+  }
   editAuthor(id: string) {
+    this.uploadedImageUrl = null; // Reset the uploaded image URL
+    this.selectedFile = null; // Reset the selected file
+    this.selectedAuthorId = id; // Store the selected author I
     this.authorService.getByIdGuidById(id).subscribe((author) => {
       this.selectedAuthor = author;
-      console.log('selectedAuthor=',this.selectedAuthor);
+      if (author.picture)
+        this.uploadedImageUrl = this.apiUrl + author.picture; // Set the uploaded image URL
       this.buildForm();
       this.isModalOpen = true;
       this.selectedAuthorId = id; // Store the selected author ID 
     });
   }
-
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
 }

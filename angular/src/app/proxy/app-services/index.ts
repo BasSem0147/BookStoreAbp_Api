@@ -1,2 +1,4 @@
 import * as Author from './author';
-export { Author };
+import * as Book from './book';
+import * as Files from './files';
+export { Author, Book, Files };

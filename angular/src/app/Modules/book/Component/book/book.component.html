@@ -1,0 +1,116 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{ '::Books' | abpLocalization }}</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="'/home'">Home</a></li>
+                    <li class="breadcrumb-item active">Books</li>
+                </ol>
+            </div>
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Search by Book name..." [ngModel]="searchText"
+                (ngModelChange)="onSearchTextChange($event)" />
+        </div>
+        <ng-container *ngIf="Books.items.length > 0">
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <a (click)="createBook()" class="btn btn-primary float-right mb-3" *abpPermission="'BookStore.Books.CreateEdit'">Create Book</a>
+                    <div class="row" *ngIf="Books.items.length">
+                        <div class="col-12 col-md-6 col-xl-4 col-xxl-3" *ngFor="let item of Books.items">
+                            <div class="card" style="height:300px;cursor: pointer;" (click)="editBook(obj.id)">
+                                <img [src]="apiUrl+item.picture" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{item.name}}</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                        the bulk of the card's content.
+                                        <br />price:- {{item.price | currency:'USD':'symbol':'1.2-2'}}
+                                    </p>
+                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <pagination [totalItems]="totalCount" [maxSize]="7" [(ngModel)]="pageNum" (pageChanged)="pageChanged($event)" [itemsPerPage]="pageSize"></pagination>
+                        <br />
+                        <pre class="card card-block card-header mb-3">Total Books: {{totalCount}}</pre>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- No Data -->
+        <ng-container *ngIf="!Books.items.length">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <app-no-data [routePath]="'Books/create'" msg="No Books Available" buttonLabel="Create Book">
+                    </app-no-data>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</section>
+
+<abp-modal [(visible)]="isModalOpen"  class="custom-modal-size">
+  <ng-template #abpHeader>
+    <h3>{{ '::NewBook' | abpLocalization }}</h3>
+  </ng-template>
+  <ng-template #abpBody>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="mt-2">
+        <label for="Book-name">Name</label><span> * </span>
+        <input type="text" id="Book-name" class="form-control" formControlName="name" autofocus />
+      </div>
+
+      <div class="mt-2">
+        <label for="Book-price">price</label><span> * </span>
+        <input type="number" id="Book-price" class="form-control" formControlName="price" />
+      </div>
+      <div class="mt-2">
+        <label for="Book-Author">Author</label><span> * </span>
+        <select class="form-control" id="Book-Author" formControlName="authorId">
+          <option [ngValue]="null">Select a Book author</option>
+          <option [ngValue]="type.id" *ngFor="let type of authors"> {{ type.name}}</option>
+        </select>
+      </div>
+      <div class="mt-2" style="max-width: 100%; overflow-x: auto;">
+        <label for="Book-picture">picture</label><span> * </span>
+        <input type="file" id="Book-picture" class="form-control" formControlName="picture" (change)="onFileSelected($event)" />
+        <img class="mt-4" *ngIf="uploadedImageUrl" [src]="uploadedImageUrl" style="width: 100%; height: auto;"/>
+      </div>
+      <div class="mt-2">
+        <label for="Book-type">Type</label><span> * </span>
+        <select class="form-control" id="Book-type" formControlName="type">
+          <option [ngValue]="null">Select a Book type</option>
+          <option [ngValue]="type.value" *ngFor="let type of bookType"> {{ type.key}}</option>
+        </select>
+      </div>
+      <div class="mt-2">
+        <label>publishDate</label><span> * </span>
+        <input #datepicker="ngbDatepicker" class="form-control" name="datepicker" formControlName="publishDate"
+          ngbDatepicker (click)="datepicker.toggle()" />
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #abpFooter>
+    <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+      <i class="fa fa-check mr-1"></i>
+      {{ '::Save' | abpLocalization }}
+    </button>
+    <!-- <button class="btn btn-danger" (click)="deleteImage()" [disabled]="!uploadedImageUrl">
+      <i class="fa fa-trash mr-1"></i>
+      {{ '::DeleteImage' | abpLocalization }}
+    </button>
+    <button class="btn btn-danger" (click)="deleteBook()" [disabled]="!selectedBookId">
+      <i class="fa fa-trash mr-1"></i>
+      {{ '::Delete' | abpLocalization }}
+    </button>
+    <button type="button" class="btn btn-secondary" abpClose>
+      {{ '::Close' | abpLocalization }}
+    </button> -->
+  </ng-template>
+</abp-modal>

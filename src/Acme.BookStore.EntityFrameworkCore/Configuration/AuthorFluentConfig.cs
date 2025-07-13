@@ -22,8 +22,7 @@ namespace Acme.BookStore.Configuration
             builder.Property(a => a.Bio)
                 .IsRequired()
                 .HasMaxLength(500);
-            builder.Property(a => a.Picture)
-                .HasMaxLength(500);
+            builder.Ignore(a=>a.Picture); // Ignore the Picture property as it is not stored in the database (handled separately, e.g., file storage or blob storage
             builder.Property(a => a.BirthDate)
                 .IsRequired();
             builder.Property(a => a.DeathDate)

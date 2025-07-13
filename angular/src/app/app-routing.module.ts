@@ -14,9 +14,9 @@ const routes: Routes = [
   },
   {
     path: 'Authors',
-    pathMatch: 'full',
     loadChildren: () => import('./Modules/author/author.module').then(m => m.AuthorModule)
   },
+  { path: 'books', loadChildren: () => import('./Modules/book/book.module').then(m => m.BookModule) },
   {
     path: 'identity',
     loadChildren: () => import('@abp/ng.identity').then(m => m.IdentityModule.forLazy()),

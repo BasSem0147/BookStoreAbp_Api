@@ -1,25 +1,19 @@
 ﻿using Acme.BookStore.IBaseServices;
 using Acme.BookStore.IServices.Author;
-using Acme.BookStore.Models;
+using Acme.BookStore.IServices.File;
+using Acme.BookStore.Permissions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Domain.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Volo.Abp.ObjectMapping;
-using Microsoft.AspNetCore.Authorization;
-using Acme.BookStore.Permissions;
-using Microsoft.Extensions.Caching.Distributed;
-using Volo.Abp.Caching;
 using Volo.Abp.BackgroundJobs;
-using Acme.BookStore.AppServices.Hangfire;
-using System.Net.Mail;
-using Acme.BookStore.IAppServices;
-using System.IO;
-using Microsoft.AspNetCore.Http;
+using Volo.Abp.Caching;
+using Volo.Abp.Domain.Repositories;
 
 
 namespace Acme.BookStore.AppServices.Author
@@ -29,13 +23,15 @@ namespace Acme.BookStore.AppServices.Author
         private readonly IRepository<Acme.BookStore.Models.Author, Guid> _authorRepository;
         private readonly IBackgroundJobManager _backgroundJobManager;
         public IDistributedCache<List<AuthorDto>> _Cache { get; }
-        public AuthorAppServices(IRepository<Acme.BookStore.Models.Author, Guid> authorRepository,IDistributedCache<List<AuthorDto>> cache,
-            IBackgroundJobManager backgroundJobManager
+        private readonly IFileServices _fileServices;
+        public AuthorAppServices(IRepository<Acme.BookStore.Models.Author, Guid> authorRepository, IDistributedCache<List<AuthorDto>> cache,
+            IBackgroundJobManager backgroundJobManager, IFileServices fileServices
             )
         {
             _authorRepository = authorRepository;
             _Cache = cache;
             _backgroundJobManager = backgroundJobManager;
+            _fileServices = fileServices;
         }
 
 
@@ -48,6 +44,7 @@ namespace Acme.BookStore.AppServices.Author
                 return false;
             }
             await _authorRepository.DeleteAsync(id);
+            await _fileServices.DeleteFileAsync(Path.Combine("Authors", id.ToString()));
             return true;
         }
 
@@ -60,7 +57,7 @@ namespace Acme.BookStore.AppServices.Author
             //    Subject = "You've successfully registered!",
             //    Body = "..."
             //});
-            var authors = await _authorRepository.WithDetailsAsync(p => p.Books);
+            var authors = await _authorRepository.GetQueryableAsync();
 
             // ✅ Apply filtering and paging
             var query = authors.AsQueryable()
@@ -87,8 +84,15 @@ namespace Acme.BookStore.AppServices.Author
             var result = await _authorRepository.GetAsync(id);
             if (result == null)
                 return new AuthorDto();
-            else 
-            return ObjectMapper.Map<Acme.BookStore.Models.Author, AuthorDto>(result);
+            else
+            {
+                var imageAttachments = await _fileServices.GetFileUrlAsync(Path.Combine("Authors"+id.ToString()));
+                if (!string.IsNullOrEmpty(imageAttachments))
+                {
+                    result.Picture = imageAttachments.ToString();
+                }
+            }
+                return ObjectMapper.Map<Acme.BookStore.Models.Author, AuthorDto>(result);
         }
 
         public async Task<AuthorDto> Insert(Create_Update_Author input)
@@ -100,7 +104,8 @@ namespace Acme.BookStore.AppServices.Author
             }
             var mapped = ObjectMapper.Map<Create_Update_Author, Acme.BookStore.Models.Author>(input);
             var inserted = await _authorRepository.InsertAsync(mapped);
-            //_fileServices.UploadFileAsync(Path.Combine("Authors", inserted.Id.ToString(), "images"), new IFormFile { });
+            //if (input.Picture != null)
+            //    _fileServices.UploadFileAsync(Path.Combine("Authors", inserted.Id.ToString(), "Images"), input.Picture);
             return ObjectMapper.Map<Acme.BookStore.Models.Author, AuthorDto>(inserted);
         }
 
@@ -126,8 +131,13 @@ namespace Acme.BookStore.AppServices.Author
         }
         private async Task<List<AuthorDto>> GetAllAutorFromDB()
         {
-            var items = await _authorRepository.GetListAsync();
-            return ObjectMapper.Map<List<Acme.BookStore.Models.Author>, List<AuthorDto>>(items);
+            var query = await _authorRepository.GetQueryableAsync();
+            var items = await query.Select(a => new AuthorDto
+            {
+                Id = a.Id,
+                Name = a.Name+" "+a.Surname,
+            }).ToListAsync();
+            return items;
         }
     }
 }

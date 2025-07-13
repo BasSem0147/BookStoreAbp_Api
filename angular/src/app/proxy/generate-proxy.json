@@ -1194,6 +1194,553 @@
               },
               "allowAnonymous": null,
               "implementFrom": "Acme.BookStore.IBaseServices.IBaseServices<Acme.BookStore.IServices.Author.AuthorDto,Acme.BookStore.IServices.Author.Create_Update_Author>"
+            },
+            "GetAllAutorFromCache": {
+              "uniqueName": "GetAllAutorFromCache",
+              "name": "GetAllAutorFromCache",
+              "httpMethod": "GET",
+              "url": "api/app/author-app-services/autor-from-cache",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Acme.BookStore.IServices.Author.AuthorDto>",
+                "typeSimple": "[Acme.BookStore.IServices.Author.AuthorDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Acme.BookStore.AppServices.Author.AuthorAppServices"
+            }
+          }
+        },
+        "Acme.BookStore.AppServices.Book.BookAppServices": {
+          "controllerName": "BookAppServices",
+          "controllerGroupName": "BookAppServices",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Acme.BookStore.AppServices.Book.BookAppServices",
+          "interfaces": [
+            {
+              "type": "Acme.BookStore.IServices.Book.IBookServices",
+              "name": "IBookServices",
+              "methods": [
+                {
+                  "name": "Update",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Acme.BookStore.IServices.Book.Create_Update_Book, Acme.BookStore.Application.Contracts",
+                      "type": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                      "typeSimple": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Acme.BookStore.IServices.Book.BookDto",
+                    "typeSimple": "Acme.BookStore.IServices.Book.BookDto"
+                  }
+                },
+                {
+                  "name": "Insert",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Acme.BookStore.IServices.Book.Create_Update_Book, Acme.BookStore.Application.Contracts",
+                      "type": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                      "typeSimple": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Acme.BookStore.IServices.Book.BookDto",
+                    "typeSimple": "Acme.BookStore.IServices.Book.BookDto"
+                  }
+                },
+                {
+                  "name": "GetByIdGuid",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Acme.BookStore.IServices.Book.BookDto",
+                    "typeSimple": "Acme.BookStore.IServices.Book.BookDto"
+                  }
+                },
+                {
+                  "name": "GetAll",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Acme.BookStore.IBaseServices.GetBaseList, Acme.BookStore.Application.Contracts",
+                      "type": "Acme.BookStore.IBaseServices.GetBaseList",
+                      "typeSimple": "Acme.BookStore.IBaseServices.GetBaseList",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<Acme.BookStore.IServices.Book.BookDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Acme.BookStore.IServices.Book.BookDto>"
+                  }
+                },
+                {
+                  "name": "DeleteByIdGuid",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Boolean",
+                    "typeSimple": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "DeleteByIdGuidById": {
+              "uniqueName": "DeleteByIdGuidById",
+              "name": "DeleteByIdGuid",
+              "httpMethod": "DELETE",
+              "url": "api/app/book-app-services/{id}/by-id-guid",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Boolean",
+                "typeSimple": "boolean"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Acme.BookStore.IBaseServices.IBaseServices<Acme.BookStore.IServices.Book.BookDto,Acme.BookStore.IServices.Book.Create_Update_Book>"
+            },
+            "GetAllByInput": {
+              "uniqueName": "GetAllByInput",
+              "name": "GetAll",
+              "httpMethod": "GET",
+              "url": "api/app/book-app-services",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Acme.BookStore.IBaseServices.GetBaseList, Acme.BookStore.Application.Contracts",
+                  "type": "Acme.BookStore.IBaseServices.GetBaseList",
+                  "typeSimple": "Acme.BookStore.IBaseServices.GetBaseList",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<Acme.BookStore.IServices.Book.BookDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Acme.BookStore.IServices.Book.BookDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Acme.BookStore.IBaseServices.IBaseServices<Acme.BookStore.IServices.Book.BookDto,Acme.BookStore.IServices.Book.Create_Update_Book>"
+            },
+            "GetByIdGuidById": {
+              "uniqueName": "GetByIdGuidById",
+              "name": "GetByIdGuid",
+              "httpMethod": "GET",
+              "url": "api/app/book-app-services/{id}/by-id-guid",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Acme.BookStore.IServices.Book.BookDto",
+                "typeSimple": "Acme.BookStore.IServices.Book.BookDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Acme.BookStore.IBaseServices.IBaseServices<Acme.BookStore.IServices.Book.BookDto,Acme.BookStore.IServices.Book.Create_Update_Book>"
+            },
+            "InsertByInput": {
+              "uniqueName": "InsertByInput",
+              "name": "Insert",
+              "httpMethod": "POST",
+              "url": "api/app/book-app-services",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Acme.BookStore.IServices.Book.Create_Update_Book, Acme.BookStore.Application.Contracts",
+                  "type": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                  "typeSimple": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                  "typeSimple": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Acme.BookStore.IServices.Book.BookDto",
+                "typeSimple": "Acme.BookStore.IServices.Book.BookDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Acme.BookStore.IBaseServices.IBaseServices<Acme.BookStore.IServices.Book.BookDto,Acme.BookStore.IServices.Book.Create_Update_Book>"
+            },
+            "UpdateByInput": {
+              "uniqueName": "UpdateByInput",
+              "name": "Update",
+              "httpMethod": "PUT",
+              "url": "api/app/book-app-services",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Acme.BookStore.IServices.Book.Create_Update_Book, Acme.BookStore.Application.Contracts",
+                  "type": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                  "typeSimple": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                  "typeSimple": "Acme.BookStore.IServices.Book.Create_Update_Book",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Acme.BookStore.IServices.Book.BookDto",
+                "typeSimple": "Acme.BookStore.IServices.Book.BookDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Acme.BookStore.IBaseServices.IBaseServices<Acme.BookStore.IServices.Book.BookDto,Acme.BookStore.IServices.Book.Create_Update_Book>"
+            }
+          }
+        },
+        "Acme.BookStore.AppServices.Files.Image.FileServices": {
+          "controllerName": "FileServices",
+          "controllerGroupName": "FileServices",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Acme.BookStore.AppServices.Files.Image.FileServices",
+          "interfaces": [
+            {
+              "type": "Acme.BookStore.IServices.File.IFileServices",
+              "name": "IFileServices",
+              "methods": [
+                {
+                  "name": "UploadFileAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "Id",
+                      "typeAsString": "System.String, System.Private.CoreLib",
+                      "type": "System.String",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "file",
+                      "typeAsString": "Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features",
+                      "type": "Microsoft.AspNetCore.Http.IFormFile",
+                      "typeSimple": "Microsoft.AspNetCore.Http.IFormFile",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Boolean",
+                    "typeSimple": "boolean"
+                  }
+                },
+                {
+                  "name": "DeleteFileAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "Id",
+                      "typeAsString": "System.String, System.Private.CoreLib",
+                      "type": "System.String",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Boolean",
+                    "typeSimple": "boolean"
+                  }
+                },
+                {
+                  "name": "GetFileUrlAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "Id",
+                      "typeAsString": "System.String, System.Private.CoreLib",
+                      "type": "System.String",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.String",
+                    "typeSimple": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "UploadFileAsyncByIdAndFile": {
+              "uniqueName": "UploadFileAsyncByIdAndFile",
+              "name": "UploadFileAsync",
+              "httpMethod": "POST",
+              "url": "UploadFileAsync",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "Id",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "file",
+                  "typeAsString": "Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features",
+                  "type": "Microsoft.AspNetCore.Http.IFormFile",
+                  "typeSimple": "Microsoft.AspNetCore.Http.IFormFile",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "Id",
+                  "name": "Id",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "file",
+                  "name": "file",
+                  "jsonName": null,
+                  "type": "Microsoft.AspNetCore.Http.IFormFile",
+                  "typeSimple": "Microsoft.AspNetCore.Http.IFormFile",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "FormFile",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Boolean",
+                "typeSimple": "boolean"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Acme.BookStore.IServices.File.IFileServices"
+            },
+            "DeleteFileAsyncById": {
+              "uniqueName": "DeleteFileAsyncById",
+              "name": "DeleteFileAsync",
+              "httpMethod": "POST",
+              "url": "DeleteFileAsync",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "Id",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "Id",
+                  "name": "Id",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Boolean",
+                "typeSimple": "boolean"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Acme.BookStore.IServices.File.IFileServices"
+            },
+            "GetFileUrlAsyncById": {
+              "uniqueName": "GetFileUrlAsyncById",
+              "name": "GetFileUrlAsync",
+              "httpMethod": "GET",
+              "url": "GetFileUrlAsync",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "Id",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "Id",
+                  "name": "Id",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.String",
+                "typeSimple": "string"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Acme.BookStore.IServices.File.IFileServices"
             }
           }
         }
@@ -3842,6 +4389,34 @@
     }
   },
   "types": {
+    "Acme.BookStore.Enums.BookType": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "Undefined",
+        "Adventure",
+        "Biography",
+        "Dystopia",
+        "Fantastic",
+        "Horror",
+        "Science",
+        "ScienceFiction",
+        "Poetry"
+      ],
+      "enumValues": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "genericArguments": null,
+      "properties": null
+    },
     "Acme.BookStore.IBaseServices.GetBaseList": {
       "baseType": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
       "isEnum": false,
@@ -3988,18 +4563,6 @@
           "regex": null
         },
         {
-          "name": "Picture",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
           "name": "BirthDate",
           "jsonName": null,
           "type": "System.DateTime",
@@ -4016,6 +4579,249 @@
           "jsonName": null,
           "type": "System.DateTime?",
           "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "Acme.BookStore.IServices.Book.BookDto": {
+      "baseType": "Volo.Abp.Application.Dtos.AuditedEntityDto<System.Guid>",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Name",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Type",
+          "jsonName": null,
+          "type": "Acme.BookStore.Enums.BookType",
+          "typeSimple": "enum",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "PublishDate",
+          "jsonName": null,
+          "type": "System.DateTime",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Price",
+          "jsonName": null,
+          "type": "System.Single",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Picture",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "AuthorId",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "AuthorName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "Acme.BookStore.IServices.Book.Create_Update_Book": {
+      "baseType": "Volo.Abp.Application.Dtos.AuditedEntityDto<System.Guid>",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Name",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Type",
+          "jsonName": null,
+          "type": "Acme.BookStore.Enums.BookType",
+          "typeSimple": "enum",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "PublishDate",
+          "jsonName": null,
+          "type": "System.DateTime",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Price",
+          "jsonName": null,
+          "type": "System.Single",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "AuthorId",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "Microsoft.AspNetCore.Http.IFormFile": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "ContentType",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "ContentDisposition",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Headers",
+          "jsonName": null,
+          "type": "{System.String:Microsoft.Extensions.Primitives.StringValues}",
+          "typeSimple": "{string:Microsoft.Extensions.Primitives.StringValues}",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Length",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Name",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "FileName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,

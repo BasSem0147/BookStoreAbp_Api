@@ -24,6 +24,14 @@ function configureRoutes() {
         order: 2,
         layout: eLayoutType.application,
         requiredPolicy: 'BookStore.Authors.List',
-      }
+      },
+      {
+        path: '/books',
+        name: 'Books',
+        iconClass: 'fas fa-list',
+        order: 2,
+        layout: eLayoutType.application,
+        requiredPolicy: 'BookStore.Books.List',
+      },
   ]);
 }

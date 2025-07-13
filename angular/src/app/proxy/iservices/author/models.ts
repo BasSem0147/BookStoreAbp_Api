@@ -13,7 +13,6 @@ export interface Create_Update_Author extends AuditedEntityDto<string> {
   name?: string;
   surname?: string;
   bio?: string;
-  picture?: string;
   birthDate?: string;
   deathDate?: string;
 }

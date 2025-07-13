@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Acme.BookStore.Enums
 {
-
     public enum BookType
     {
         Undefined,

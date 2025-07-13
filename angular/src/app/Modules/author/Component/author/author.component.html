@@ -55,8 +55,7 @@
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <pagination [totalItems]="totalCount" [(ngModel)]="pageNum" (pageChanged)="pageChanged($event)"
-              (numPages)="smallnumPages = $event"></pagination>
+            <pagination [totalItems]="totalCount" [(ngModel)]="pageNum" (pageChanged)="pageChanged($event)" [itemsPerPage]="pageSize"></pagination>
               <br />
             <pre class="card card-block card-header mb-3">Total Authors: {{totalCount}}</pre>
           </div>
@@ -75,11 +74,10 @@
     </ng-container>
   </div>
 </section>
-<abp-modal [(visible)]="isModalOpen">
+<abp-modal [(visible)]="isModalOpen"  class="custom-modal-size">
   <ng-template #abpHeader>
     <h3>{{ '::NewAuthor' | abpLocalization }}</h3>
   </ng-template>
-
   <ng-template #abpBody>
     <form [formGroup]="form" (ngSubmit)="save()">
       <div class="mt-2">
@@ -95,9 +93,10 @@
         <label for="Author-Bio">Bio</label><span> * </span>
         <input type="text" id="Author-Bio" class="form-control" formControlName="bio" />
       </div>
-      <div class="mt-2">
+      <div class="mt-2" style="max-width: 100%; overflow-x: auto;">
         <label for="Author-picture">picture</label><span> * </span>
-        <input type="text" id="Author-picture" class="form-control" formControlName="picture" />
+        <input type="file" id="Author-picture" class="form-control" formControlName="picture" (change)="onFileSelected($event)" />
+        <img class="mt-4" *ngIf="uploadedImageUrl" [src]="uploadedImageUrl" style="width: 100%; height: auto;"/>
       </div>
       <!-- <div class="mt-2">
         <label for="Author-type">Type</label><span> * </span>
@@ -123,6 +122,10 @@
     <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
       <i class="fa fa-check mr-1"></i>
       {{ '::Save' | abpLocalization }}
+    </button>
+    <button class="btn btn-danger" (click)="deleteImage()" [disabled]="!uploadedImageUrl">
+      <i class="fa fa-trash mr-1"></i>
+      {{ '::DeleteImage' | abpLocalization }}
     </button>
     <button class="btn btn-danger" (click)="deleteAuthor()" [disabled]="!selectedAuthorId">
       <i class="fa fa-trash mr-1"></i>
